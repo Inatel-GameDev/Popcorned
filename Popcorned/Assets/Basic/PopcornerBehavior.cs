@@ -15,11 +15,11 @@ public class PopcornerBehavior : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (timer >= spawnrate)
         {
+            SoundPlayer.Instance.GiveCue();
             if (direction)
             {
                 Instantiate(popcornl,transform.position,transform.rotation);
