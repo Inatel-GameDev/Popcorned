@@ -1,22 +1,69 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SoundPlayer : MonoBehaviour
 {
-    public static SoundPlayer Instance;
-
+    public PopcornerBehavior popcornerR, popcornerL;
     public AudioSource src;
     public AudioClip cue;
 
-    private void Awake()
+    private List<float> partitura;
+    
+    void Awake()
     {
-        Instance = this;
+        partitura = new List<float>();
+        src.clip = cue;
+    }
+    void Start()
+    {
+        StartCoroutine(Loopar());
+    }
+    private void GenSheet()
+    {
+        partitura.Add(1f);
+        partitura.Add(0.5f);
+        partitura.Add(1f);
+        partitura.Add(0.25f);
+
+        partitura.Add(0f);
+    }
+    private IEnumerator GiveAudioCue()
+    {
+        for (int i = 0; i < partitura.Count; i++)
+        {
+            src.Play();
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+    private IEnumerator StartPopcorning()
+    {
+        for (int i = 0; i < partitura.Count; i++)
+        {
+            popcornerL.TossPopcorn();
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 
-    public void GiveCue()
+    private IEnumerator IniciarRound()
     {
-        src.clip = cue;
-        src.Play();
+        GenSheet();
+
+        yield return StartCoroutine(GiveAudioCue());
+
+        yield return StartCoroutine(StartPopcorning());
+
+        partitura.Clear();
+    }
+
+    private IEnumerator Loopar()
+    {
+        while (true)
+        {
+            yield return StartCoroutine(IniciarRound());
+
+            yield return new WaitForSeconds(1f);
+        }
     }
 }
