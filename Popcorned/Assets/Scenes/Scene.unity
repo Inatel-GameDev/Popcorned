@@ -426,7 +426,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popcornl: {fileID: 7625067787103833888, guid: f499ee7047c33764cb25cff0af9b3a75, type: 3}
   popcornr: {fileID: 7625067787103833888, guid: f611bbb19d9ad7c469bffc218ffdf767, type: 3}
-  spawnrate: 2
+  RoundDelay: 2
+  SpawnDelay: 0.3
   direction: 1
 --- !u!4 &1271245024
 Transform:
@@ -617,7 +618,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popcornl: {fileID: 7625067787103833888, guid: f499ee7047c33764cb25cff0af9b3a75, type: 3}
   popcornr: {fileID: 7625067787103833888, guid: f611bbb19d9ad7c469bffc218ffdf767, type: 3}
-  spawnrate: 3
+  RoundDelay: 2
+  SpawnDelay: 0.3
   direction: 0
 --- !u!4 &1884152739
 Transform:

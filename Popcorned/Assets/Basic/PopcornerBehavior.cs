@@ -6,33 +6,32 @@ public class PopcornerBehavior : MonoBehaviour
 {
     public GameObject popcornl, popcornr;
 
-    public float spawnrate = 1;
-    public bool direction;
+    public float RoundDelay;
+    public float SpawnDelay;
 
-    private float timer = 0;
+    public bool direction;
+    
+    Coroutine coroutine;
     void Start()
     {
-
+        coroutine = StartCoroutine(SpawnNWait());
     }
 
-    void Update()
+    IEnumerator SpawnNWait()
     {
-        if (timer >= spawnrate)
+        while (true)
         {
+            yield return new WaitForSeconds(RoundDelay);
             SoundPlayer.Instance.GiveCue();
+            yield return new WaitForSeconds(SpawnDelay);
             if (direction)
             {
-                Instantiate(popcornl,transform.position,transform.rotation);
+                Instantiate(popcornl, transform.position, transform.rotation);
             }
             else
             {
                 Instantiate(popcornr, transform.position, transform.rotation);
             }
-            timer = 0;
-        }
-        else
-        {
-            timer += Time.deltaTime;
         }
     }
 }
