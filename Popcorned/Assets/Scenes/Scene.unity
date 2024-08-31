@@ -476,8 +476,8 @@ MonoBehaviour:
   popcornerL: {fileID: 1271245023}
   src: {fileID: 1733359623}
   cue: {fileID: 8300000, guid: 735552a75fa352849af8e43e0c73d0cf, type: 3}
-  bpm: 120
-  spawndelay: 1
+  bpm: 75
+  spawndelay: 0.5
 --- !u!82 &1733359623
 AudioSource:
   m_ObjectHideFlags: 0

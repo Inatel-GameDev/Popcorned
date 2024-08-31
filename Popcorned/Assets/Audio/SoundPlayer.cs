@@ -9,7 +9,7 @@ public class SoundPlayer : MonoBehaviour
     public AudioSource src;
     public AudioClip cue;
 
-    private List<float> partitura;
+    private List<Vector2> partitura;
     private float beat;
     public int bpm;
     public float spawndelay;
@@ -17,7 +17,7 @@ public class SoundPlayer : MonoBehaviour
     void Awake()
     {
         beat = bpm / 60f;
-        partitura = new List<float>();
+        partitura = new List<Vector2>();
         src.clip = cue;
     }
     void Start()
@@ -26,28 +26,45 @@ public class SoundPlayer : MonoBehaviour
     }
     private void GenSheet()
     {
-        partitura.Add(0.5f);
-        partitura.Add(0.5f);
-        partitura.Add(0.5f);
-        partitura.Add(0.5f);
-        partitura.Add(1f);
+        partitura.Add(new Vector2(1f, 0));
+        partitura.Add(new Vector2(0.5f, 1));
+        partitura.Add(new Vector2(0.5f, 1));
+        partitura.Add(new Vector2(1f, 1));
+        partitura.Add(new Vector2(0.5f, 0));
+        partitura.Add(new Vector2(0.5f, 0));
 
-        partitura.Add(spawndelay*beat);
+        partitura.Add(new Vector2(spawndelay*beat, 0));
     }
     private IEnumerator GiveAudioCue()
     {
         for (int i = 0; i < partitura.Count; i++)
         {
+            if (partitura[i].y == 0)
+            {
+                src.panStereo = -1;
+            }
+            else
+            {
+                src.panStereo = 1;
+            }
             src.Play();
-            yield return new WaitForSeconds(partitura[i]/beat);
+            yield return new WaitForSeconds(partitura[i].x/beat);
         }
     }
     private IEnumerator StartPopcorning()
     {
         for (int i = 0; i < partitura.Count; i++)
         {
-            popcornerL.TossPopcorn();
-            yield return new WaitForSeconds(partitura[i]/beat);
+            if (partitura[i].y == 0)
+            {
+                popcornerL.TossPopcorn();
+            }
+            else
+            {
+                popcornerR.TossPopcorn();
+            }
+
+            yield return new WaitForSeconds(partitura[i].x/beat);
         }
     }
 
