@@ -10,9 +10,13 @@ public class SoundPlayer : MonoBehaviour
     public AudioClip cue;
 
     private List<float> partitura;
+    private float beat;
+    public int bpm;
+    public float spawndelay;
     
     void Awake()
     {
+        beat = bpm / 60f;
         partitura = new List<float>();
         src.clip = cue;
     }
@@ -22,19 +26,20 @@ public class SoundPlayer : MonoBehaviour
     }
     private void GenSheet()
     {
-        partitura.Add(1f);
+        partitura.Add(0.5f);
+        partitura.Add(0.5f);
+        partitura.Add(0.5f);
         partitura.Add(0.5f);
         partitura.Add(1f);
-        partitura.Add(0.25f);
 
-        partitura.Add(0f);
+        partitura.Add(spawndelay*beat);
     }
     private IEnumerator GiveAudioCue()
     {
         for (int i = 0; i < partitura.Count; i++)
         {
             src.Play();
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(partitura[i]/beat);
         }
     }
     private IEnumerator StartPopcorning()
@@ -42,7 +47,7 @@ public class SoundPlayer : MonoBehaviour
         for (int i = 0; i < partitura.Count; i++)
         {
             popcornerL.TossPopcorn();
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(partitura[i]/beat);
         }
     }
 
@@ -59,11 +64,10 @@ public class SoundPlayer : MonoBehaviour
 
     private IEnumerator Loopar()
     {
+        yield return new WaitForSeconds(spawndelay*beat);
         while (true)
         {
             yield return StartCoroutine(IniciarRound());
-
-            yield return new WaitForSeconds(1f);
         }
     }
 }
