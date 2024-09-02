@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PopcornRBehavior : MonoBehaviour
 {
+    // o objeto pipoca eh atirado em direcao ao jogador no momento em que eh instanciado
+    // ao atingir o jogador eh feita a verificacao da flag 'parring' dependente da direcao
+    // caso o jogador esteja no estado de 'parry' eh chamado o metodo que atira a pipoca no sentido oposto
+
     public Vector2 force = new Vector2(0.5f, 0f);
     public Vector2 deadzone = new Vector2();
 

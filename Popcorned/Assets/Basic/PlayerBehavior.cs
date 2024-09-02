@@ -5,8 +5,10 @@ using UnityEngine;
 
 public class PlayerBehavior : MonoBehaviour
 {
+    // a classe PlayerBehavior eh declarada como Singleton para que possa ser referenciada de forma facil durante todo o codigo
     public static PlayerBehavior Instance;
 
+    // flag publicas utilizadas para a mecanica de parry
     public bool parringR, parringL;
     public float tolerance;
 
@@ -24,6 +26,7 @@ public class PlayerBehavior : MonoBehaviour
 
     void Update()
     {
+        // a cada frame sao coletados os inputs e as variaveis flags publicas sao atualizadas
         if (Input.GetMouseButtonDown(1))
         {
             parringR = true;

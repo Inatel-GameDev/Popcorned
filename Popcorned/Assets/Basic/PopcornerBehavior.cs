@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PopcornerBehavior : MonoBehaviour
 {
+    // objeto vazio que possui um metodo capaz de instanciar a classe 'pipoca', o spanw depende da direcao em que a pipoca deve ser atirada
     public GameObject popcornl, popcornr;
     public bool direction;
 

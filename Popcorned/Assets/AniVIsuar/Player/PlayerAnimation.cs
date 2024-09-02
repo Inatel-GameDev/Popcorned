@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
+    // codigo que gerencia as animacoes do jogador em mais baixo nivel, maior baste das animacoes sao gerenciadas na aba 'animator'
     private SpriteRenderer fliped;
     private Animator animator;
     void Start()
@@ -12,7 +13,7 @@ public class PlayerAnimation : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
