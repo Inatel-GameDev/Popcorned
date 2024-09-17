@@ -25,7 +25,7 @@ public class SoundPlayer : MonoBehaviour
     void Awake()
     {
         rounds = 0;
-        maxrounds = 2;
+        maxrounds = 7;
         beat = bpm / 60f;
         partitura = new List<Vector2>[maxrounds];
         src.clip = cue;
@@ -50,12 +50,15 @@ public class SoundPlayer : MonoBehaviour
             if (partitura[rounds][i].y == 0)
             {
                 src.panStereo = -1;
+                src.Play();
             }
-            else
+            
+            if (partitura[rounds][i].y == 1)
             {
                 src.panStereo = 1;
+                src.Play();
             }
-            src.Play();
+            
             yield return new WaitForSeconds(partitura[rounds][i].x/beat);
         }
     }
@@ -67,7 +70,8 @@ public class SoundPlayer : MonoBehaviour
             {
                 popcornerL.TossPopcorn();
             }
-            else
+            
+            if (partitura[rounds][i].y == 1)
             {
                 popcornerR.TossPopcorn();
             }
@@ -83,27 +87,93 @@ public class SoundPlayer : MonoBehaviour
         yield return StartCoroutine(StartPopcorning());
     }
 
+    private void checkspecialround()
+    {
+        switch (rounds)
+        {
+            case 3:
+                speedUp();
+                break;
+
+            case 5:
+                slowDown(); 
+                break;
+        }
+    }
     private IEnumerator Loopar() // metodo que roda as corrotinas em loop
     {
         yield return new WaitForSeconds(spawndelay*beat);
         for (this.rounds = 0; this.rounds < maxrounds; this.rounds++)
         {
+            checkspecialround();
             yield return StartCoroutine(IniciarRound());
         }
     }
+
+    private void speedUp()
+    {
+        bpm = bpm * 2;
+        beat = bpm / 60f;
+        PlayerBehavior.Instance.tolerance = PlayerBehavior.Instance.tolerance/2;
+    }
+
+    private void slowDown()
+    {
+        bpm = bpm / 2;
+        beat = bpm / 60f;
+        PlayerBehavior.Instance.tolerance = PlayerBehavior.Instance.tolerance*2;
+    }
+
     private void GenSheet() // metodo privado, ele abstrai os valores das notas (intervalo e sentido) e os armazena no atributo 'partitura'
     {
+        float roundendcue = spawndelay*beat;
+
         partitura[0].Add(new Vector2(1f, 0));
         partitura[0].Add(new Vector2(0.5f, 1));
         partitura[0].Add(new Vector2(0.5f, 1));
         partitura[0].Add(new Vector2(1f, 1));
         partitura[0].Add(new Vector2(0.5f, 0));
         partitura[0].Add(new Vector2(0.5f, 0));
-        partitura[0].Add(new Vector2(spawndelay * beat, 0)); // o ultimo intervalo entre notas representa o intervalo entre o fim da corrotina atual e a proxima
+        partitura[0].Add(new Vector2(roundendcue, 0)); // o ultimo intervalo entre notas representa o intervalo entre o fim da corrotina atual e a proxima
 
         partitura[1].Add(new Vector2(1f, 1));
         partitura[1].Add(new Vector2(1f, 1));
         partitura[1].Add(new Vector2(1f, 1));
-        partitura[1].Add(new Vector2(spawndelay * beat, 1));
+        partitura[1].Add(new Vector2(roundendcue, 1));
+
+        partitura[2].Add(new Vector2(0.5f, 1));
+        partitura[2].Add(new Vector2(0.5f, 0));
+        partitura[2].Add(new Vector2(0.5f, 1));
+        partitura[2].Add(new Vector2(0.5f, 0));
+        partitura[2].Add(new Vector2(1f, 1));
+        partitura[2].Add(new Vector2(roundendcue, 0));
+
+        partitura[3].Add(new Vector2(1f, 0));
+        partitura[3].Add(new Vector2(1f, 0));
+        partitura[3].Add(new Vector2(0.5f, 1));
+        partitura[3].Add(new Vector2(0.5f, 1));
+        partitura[3].Add(new Vector2(roundendcue, 0));
+
+        partitura[4].Add(new Vector2(0.5f, 0));
+        partitura[4].Add(new Vector2(0.5f, 1));
+        partitura[4].Add(new Vector2(0.5f, 0));
+        partitura[4].Add(new Vector2(0.5f, 1));
+        partitura[4].Add(new Vector2(1f, 0));
+        partitura[4].Add(new Vector2(roundendcue, 1));
+
+        partitura[5].Add(new Vector2(1f, 0));
+        partitura[5].Add(new Vector2(0.5f, -1));
+        partitura[5].Add(new Vector2(1f, 0));
+        partitura[5].Add(new Vector2(0.5f, 1));
+        partitura[5].Add(new Vector2(0.5f, 1));
+        partitura[5].Add(new Vector2(roundendcue, 1));
+
+        partitura[6].Add(new Vector2(1f, 0));
+        partitura[6].Add(new Vector2(0.5f, 1));
+        partitura[6].Add(new Vector2(0.5f, 1));
+        partitura[6].Add(new Vector2(1f, 1));
+        partitura[6].Add(new Vector2(0.5f, 0));
+        partitura[6].Add(new Vector2(0.5f, 0));
+        partitura[6].Add(new Vector2(roundendcue, 0));
     }
 }
