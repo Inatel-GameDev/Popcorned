@@ -18,12 +18,14 @@ public class SoundPlayer : MonoBehaviour
     // atributos logicos
     private List<Vector2>[] partitura; // uma lista guiada que armazena os intervalos e o sentido das pipocas/notas
     private float beat; // uma variavel intermediaria para facilitar calculos, representa a frequencia em Hz do bpm
+    private bool reverse; // enquanto a variavel reverse estiver ativa, as pipocas vao spawnar no sentido oposto a dica de audio
     private int maxrounds;
     private int rounds;
     public float spawndelay; // uma variavel que define o intervalo entre o fim das dicas de audio e o spawn das pipocas
     
     void Awake()
     {
+        reverse = false;
         rounds = 0;
         maxrounds = 7;
         beat = bpm / 60f;
@@ -68,12 +70,26 @@ public class SoundPlayer : MonoBehaviour
         {
             if (partitura[rounds][i].y == 0)
             {
-                popcornerL.TossPopcorn();
+                if (!reverse)
+                {
+                    popcornerL.TossPopcorn();
+                }
+                else
+                {
+                    popcornerR.TossPopcorn();
+                }
             }
-            
+
             if (partitura[rounds][i].y == 1)
             {
-                popcornerR.TossPopcorn();
+                if (!reverse)
+                { 
+                    popcornerR.TossPopcorn();
+                }
+                else
+                {
+                    popcornerL.TossPopcorn();
+                }
             }
 
             yield return new WaitForSeconds(partitura[rounds][i].x/beat);

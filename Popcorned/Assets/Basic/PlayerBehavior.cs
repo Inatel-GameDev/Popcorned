@@ -33,6 +33,7 @@ public class PlayerBehavior : MonoBehaviour
             {
                 Debug.Log("cancel");
                 PointMenager.Instance.decreasepoints();
+                HPMenager.Instance.decreasepoints();
             }
 
             parringR = true;
@@ -43,6 +44,7 @@ public class PlayerBehavior : MonoBehaviour
         {
             Debug.Log("calma");
             PointMenager.Instance.decreasepoints();
+            HPMenager.Instance.decreasepoints();
             parringR = false;
         }
 
@@ -52,6 +54,7 @@ public class PlayerBehavior : MonoBehaviour
             {
                 Debug.Log("cancel");
                 PointMenager.Instance.decreasepoints();
+                HPMenager.Instance.decreasepoints();
             }
 
             parringL = true;
@@ -62,6 +65,7 @@ public class PlayerBehavior : MonoBehaviour
         {
             Debug.Log("calma");
             PointMenager.Instance.decreasepoints();
+            HPMenager.Instance.decreasepoints();
             parringL = false;
         }
     }
@@ -81,6 +85,7 @@ public class PlayerBehavior : MonoBehaviour
             {
                 Debug.Log("errou");
                 PointMenager.Instance.decreasepoints();
+                HPMenager.Instance.decreasepoints();
             }
         }
 
@@ -96,6 +101,7 @@ public class PlayerBehavior : MonoBehaviour
             {
                 Debug.Log("errou");
                 PointMenager.Instance.decreasepoints();
+                HPMenager.Instance.decreasepoints();
             }
         }
     }
