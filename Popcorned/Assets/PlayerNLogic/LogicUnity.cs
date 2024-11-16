@@ -9,6 +9,7 @@ public class LogicUnity : MonoBehaviour
     public PopcornerBehavior popcornerR, popcornerL;
     public AudioSource src;
     public AudioClip cue;
+    [Range(0, 100)] public int ReverseChance;
 
     // atributos publicos
     public int bpm;
@@ -32,38 +33,35 @@ public class LogicUnity : MonoBehaviour
         StartCoroutine(Loopar());
     }
     
-    private IEnumerator GiveAudioCue(int index)
+    private IEnumerator GiveAudioCue(int index, bool reverse)
     {
         foreach (Vector2 nota in partitura[index])
         {
             if (nota.y == 0)
             {
-                src.panStereo = -1;
+                src.panStereo = reverse ? 1 : -1;
                 src.Play();
             }
 
             if (nota.y == 1)
             {
-                src.panStereo = 1;
+                src.panStereo = reverse ? -1 : 1;
                 src.Play();
             }
 
             yield return new WaitForSeconds(nota.x / beat);
         }
     }
-    private IEnumerator StartPopcorning(int index)
+    private IEnumerator StartPopcorning(int index, bool reverse)
     {
         foreach (Vector2 nota in partitura[index])
         {
             if (nota.y == 0)
-            {
                 popcornerL.TossPopcorn();
-            }
 
             if (nota.y == 1)
-            {
                 popcornerR.TossPopcorn();
-            }
+
             yield return new WaitForSeconds (nota.x / beat);
         }
     }
@@ -71,11 +69,14 @@ public class LogicUnity : MonoBehaviour
     private IEnumerator IniciarRound()
     {
         int index = Random.Range(0, partituraSize);
+        bool reverse = (Random.Range(0,100) < ReverseChance) ? false : true;
+
         Debug.Log($"Index = {index}");
+        Debug.Log($"Reverse = {reverse}");
 
-        yield return StartCoroutine(GiveAudioCue(index));
+        yield return StartCoroutine(GiveAudioCue(index, reverse));
 
-        yield return StartCoroutine(StartPopcorning(index));
+        yield return StartCoroutine(StartPopcorning(index, reverse));
     }
     private IEnumerator Loopar()
     {
