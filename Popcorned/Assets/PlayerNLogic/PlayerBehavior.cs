@@ -32,8 +32,6 @@ public class PlayerBehavior : MonoBehaviour
             if (parringR)
             {
                 Debug.Log("cancel");
-                PointMenager.Instance.decreasepoints();
-                HPMenager.Instance.decreasepoints();
             }
 
             parringR = true;
@@ -43,8 +41,6 @@ public class PlayerBehavior : MonoBehaviour
         if (parringR == true && (Time.time - timer) > tolerance)
         {
             Debug.Log("calma");
-            PointMenager.Instance.decreasepoints();
-            HPMenager.Instance.decreasepoints();
             parringR = false;
         }
 
@@ -53,8 +49,6 @@ public class PlayerBehavior : MonoBehaviour
             if (parringL)
             {
                 Debug.Log("cancel");
-                PointMenager.Instance.decreasepoints();
-                HPMenager.Instance.decreasepoints();
             }
 
             parringL = true;
@@ -64,8 +58,6 @@ public class PlayerBehavior : MonoBehaviour
         if (parringL == true && (Time.time - timer) > tolerance)
         {
             Debug.Log("calma");
-            PointMenager.Instance.decreasepoints();
-            HPMenager.Instance.decreasepoints();
             parringL = false;
         }
     }
@@ -78,14 +70,11 @@ public class PlayerBehavior : MonoBehaviour
             if (parringR)
             {
                 Debug.Log("acertou");
-                PointMenager.Instance.increasepoints();
                 parringR = false;
             }
             else
             {
                 Debug.Log("errou");
-                PointMenager.Instance.decreasepoints();
-                HPMenager.Instance.decreasepoints();
             }
         }
 
@@ -94,14 +83,11 @@ public class PlayerBehavior : MonoBehaviour
             if (parringL)
             {
                 Debug.Log("acertou");
-                PointMenager.Instance.increasepoints();
                 parringL = false;
             }
             else
             {
                 Debug.Log("errou");
-                PointMenager.Instance.decreasepoints();
-                HPMenager.Instance.decreasepoints();
             }
         }
     }
