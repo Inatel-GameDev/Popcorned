@@ -31,6 +31,7 @@ public class PlayerBehavior : MonoBehaviour
         {
             if (parringR)
             {
+                Main.Instance.decrementPoints();
                 Debug.Log("cancel");
             }
 
@@ -40,6 +41,7 @@ public class PlayerBehavior : MonoBehaviour
 
         if (parringR == true && (Time.time - timer) > tolerance)
         {
+            Main.Instance.decrementPoints();
             Debug.Log("calma");
             parringR = false;
         }
@@ -48,6 +50,7 @@ public class PlayerBehavior : MonoBehaviour
         {
             if (parringL)
             {
+                Main.Instance.decrementPoints();
                 Debug.Log("cancel");
             }
 
@@ -57,6 +60,7 @@ public class PlayerBehavior : MonoBehaviour
 
         if (parringL == true && (Time.time - timer) > tolerance)
         {
+            Main.Instance.decrementPoints();
             Debug.Log("calma");
             parringL = false;
         }
@@ -69,11 +73,13 @@ public class PlayerBehavior : MonoBehaviour
         {
             if (parringR)
             {
+                Main.Instance.incrementPoints();
                 Debug.Log("acertou");
                 parringR = false;
             }
             else
             {
+                Main.Instance.decrementPoints();
                 Debug.Log("errou");
             }
         }
@@ -82,11 +88,13 @@ public class PlayerBehavior : MonoBehaviour
         {
             if (parringL)
             {
+                Main.Instance.incrementPoints();
                 Debug.Log("acertou");
                 parringL = false;
             }
             else
             {
+                Main.Instance.decrementPoints();
                 Debug.Log("errou");
             }
         }

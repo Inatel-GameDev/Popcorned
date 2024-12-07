@@ -5,11 +5,17 @@ using UnityEngine;
 
 public class LogicUnity : MonoBehaviour
 {
+    // a classe LogicUnity eh declarada como Singleton para que possa ser referenciada de forma facil durante todo o codigo
+    public static LogicUnity Instance;
+
     // dependencias
     public PopcornerBehavior popcornerR, popcornerL;
     public AudioSource src;
     public AudioClip cue;
+
+    // controle do rng
     [Range(0, 100)] public int ReverseChance;
+    [Range(0, 100)] public int ChangeSpeedChance;
 
     // atributos publicos
     public int bpm;
@@ -19,7 +25,11 @@ public class LogicUnity : MonoBehaviour
     const int partituraSize = 7;
     private List<Vector2>[] partitura;
     private float beat;
-    
+
+    void Awake()
+    {
+        Instance = this;
+    }
     void Start()
     {
         beat = bpm / 60f;
@@ -68,8 +78,11 @@ public class LogicUnity : MonoBehaviour
     
     private IEnumerator IniciarRound()
     {
+        // rng
         int index = Random.Range(0, partituraSize);
-        bool reverse = (Random.Range(0,100) < ReverseChance) ? false : true;
+        bool reverse = (Random.Range(0,100) < ReverseChance) ? true : false;
+        bool changeSpeed = (Random.Range(0,100) <  ChangeSpeedChance) ? true : false;
+        if (changeSpeed) speedUpSlowDown();
 
         Debug.Log($"Index = {index}");
         Debug.Log($"Reverse = {reverse}");
@@ -85,6 +98,10 @@ public class LogicUnity : MonoBehaviour
             yield return StartCoroutine(IniciarRound());
     }
     
+    private void speedUpSlowDown()
+    {
+
+    }
     private void GenSheet()
     {
         float roundendcue = spawndelay*beat;
