@@ -8,18 +8,22 @@ public class Main : MonoBehaviour
     // a classe Main eh declarada como Singleton para que possa ser referenciada de forma facil durante todo o codigo
     public static Main Instance;
 
+    // atributos publicos
+    public int pointLimit;
+    public int startingPoints;
+
     // atributos privados
     private int points;
 
     void Awake()
     {
         Instance = this;
-        points = 3;
+        points = startingPoints;
     }
 
     public void incrementPoints()
     {
-        points++;
+        points += (points < pointLimit) ? 1 : 0;
     }
 
     public void decrementPoints()

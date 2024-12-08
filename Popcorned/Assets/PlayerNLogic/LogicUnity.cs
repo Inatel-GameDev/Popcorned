@@ -13,13 +13,21 @@ public class LogicUnity : MonoBehaviour
     public AudioSource src;
     public AudioClip cue;
 
-    // controle do rng
-    [Range(0, 100)] public int ReverseChance;
-    [Range(0, 100)] public int ChangeSpeedChance;
-
     // atributos publicos
-    public int bpm;
+    // velocidade do jogo
+        public int slowBpm;
+        public int normalBpm;
+        public int fastBpm;
+    // o enum é utilizado para sinalizar a velocidade atual do jogo
+    private enum CurrSpeed
+    {
+        slow, normal, fast
+    } CurrSpeed currSpeed;
+
     public float spawndelay;
+        // controle do rng
+        [Range(0, 100)] public int ReverseChance;
+        [Range(0, 100)] public int ChangeSpeedChance;
 
     // atributos privados
     const int partituraSize = 7;
@@ -32,7 +40,9 @@ public class LogicUnity : MonoBehaviour
     }
     void Start()
     {
-        beat = bpm / 60f;
+        currSpeed = new CurrSpeed();
+        currSpeed = CurrSpeed.normal;
+        beat = (int) normalBpm / 60f;
         partitura = new List<Vector2>[partituraSize];
 
         src.clip = cue;
@@ -100,7 +110,25 @@ public class LogicUnity : MonoBehaviour
     
     private void speedUpSlowDown()
     {
+        Debug.Log("Changing speed");
+        int rng = Random.Range(0, 2);
+        switch (currSpeed)
+        {
+            case CurrSpeed.slow:
+                currSpeed = (rng == 0) ? CurrSpeed.normal : CurrSpeed.fast;
+                beat = (rng == 0) ? normalBpm / 60f : fastBpm / 60f;
+                break;
 
+            case CurrSpeed.normal:
+                currSpeed = (rng == 0) ? CurrSpeed.slow : CurrSpeed.fast;
+                beat = (rng == 0) ? slowBpm / 60f : fastBpm / 60f;
+                break;
+
+            case CurrSpeed.fast:
+                currSpeed = (rng == 0) ? CurrSpeed.normal : CurrSpeed.slow;
+                beat = (rng == 0) ? normalBpm / 60f : slowBpm / 60f;
+                break;
+        }
     }
     private void GenSheet()
     {

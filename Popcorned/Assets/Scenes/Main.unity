@@ -166,6 +166,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e643d83080f6ddc40b5be1f88a75e1a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pointLimit: 5
+  startingPoints: 0
 --- !u!1 &50514306
 GameObject:
   m_ObjectHideFlags: 0
@@ -1276,10 +1278,12 @@ MonoBehaviour:
   popcornerL: {fileID: 1271245023}
   src: {fileID: 1733359623}
   cue: {fileID: 8300000, guid: 735552a75fa352849af8e43e0c73d0cf, type: 3}
-  ReverseChance: 100
-  ChangeSpeedChance: 0
-  bpm: 75
+  slowBpm: 35
+  normalBpm: 75
+  fastBpm: 100
   spawndelay: 0.5
+  ReverseChance: 100
+  ChangeSpeedChance: 100
 --- !u!82 &1733359623
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1385,7 +1389,7 @@ Transform:
   m_GameObject: {fileID: 1733359621}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0099838525, y: 0.6201816, z: 0.05851548}
+  m_LocalPosition: {x: -0.0099838525, y: 2.74, z: 0.05851548}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
