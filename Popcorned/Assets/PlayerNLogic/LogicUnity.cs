@@ -10,7 +10,7 @@ public class LogicUnity : MonoBehaviour
     public static LogicUnity Instance;
 
     // dependencias
-    public SpriteRenderer leftArrow, rightArrow, upArrow, downArrow;
+    public SpriteRenderer leftArrow, rightArrow, upArrow, downArrow, reverseSprite;
     public PopcornerBehavior popcornerR, popcornerL;
     public AudioSource src;
     public AudioClip cue;
@@ -44,6 +44,7 @@ public class LogicUnity : MonoBehaviour
         rightArrow.enabled = false;
         upArrow.enabled = false;
         downArrow.enabled = false;
+        reverseSprite.enabled = false;
     }
     void Start()
     {
@@ -112,6 +113,8 @@ public class LogicUnity : MonoBehaviour
 
         Debug.Log($"Index = {index}");
         Debug.Log($"Reverse = {reverse}");
+
+        if (reverse) yield return StartCoroutine(ShowHide(reverseSprite, 1f));
 
         yield return StartCoroutine(GiveCue(index, reverse));
 
