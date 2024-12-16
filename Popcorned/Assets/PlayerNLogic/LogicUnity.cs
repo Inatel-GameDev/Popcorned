@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -219,10 +220,12 @@ public class LogicUnity : MonoBehaviour
     private void GenSheet()
     {
         // Leitura do arquivo JSON
-        TextAsset jsonFile = Resources.Load<TextAsset>("partitura");
-        if (jsonFile != null)
-            partitura = JsonUtility.FromJson<Partitura>(jsonFile.text);
-        
+        string filePath = Path.Combine(Application.persistentDataPath, "partitura.json");
+        string jsonContent = File.ReadAllText(filePath); // Lê o JSON do arquivo copiado
+        if (!string.IsNullOrEmpty(jsonContent))
+            partitura = JsonUtility.FromJson<Partitura>(jsonContent);
+
+
         // O final de todas as fases deve conter o tempo do final do round
         foreach (Fase fase in partitura.phases)
         {
