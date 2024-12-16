@@ -4,6 +4,42 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+// classe que representa uma nota, utilizada para facilitar a implementacao do arquivo JSON
+[System.Serializable]
+public class Nota
+{
+    public float duration;
+    public int direction;
+    public Nota(float duration, int direction)
+    {
+        this.duration = duration;
+        this.direction = direction;
+    }
+}
+
+// a classe que representa uma fase, uma lista de notas, tambem utilizada para o arquivo JSON
+[System.Serializable]
+public class Fase
+{
+    public List<Nota> notas;
+    public Fase()
+    {
+        notas = new List<Nota>();
+    }
+}
+
+// a classe que representa a partitura, uma lista de fases, tambem utilizada para o arquivo JSON
+[System.Serializable]
+public class Partitura
+{
+    public List<Fase> phases;
+    public Partitura()
+    {
+        phases = new List<Fase>();
+    }
+}
+
+// classe principal
 public class LogicUnity : MonoBehaviour
 {
     // a classe LogicUnity eh declarada como Singleton para que possa ser referenciada de forma facil durante todo o codigo
@@ -32,8 +68,7 @@ public class LogicUnity : MonoBehaviour
         [Range(0, 100)] public int ChangeSpeedChance;
 
     // atributos privados
-    const int partituraSize = 7;
-    private List<Vector2>[] partitura;
+    private Partitura partitura;
     private float beat;
 
     void Awake()
@@ -51,37 +86,35 @@ public class LogicUnity : MonoBehaviour
         currSpeed = new CurrSpeed();
         currSpeed = CurrSpeed.normal;
         beat = (int) normalBpm / 60f;
-        partitura = new List<Vector2>[partituraSize];
+        partitura = new Partitura();
 
         src.clip = cue;
-        for (int i = 0; i < partituraSize; i++)
-            partitura[i] = new List<Vector2>();
 
         GenSheet();
         StartCoroutine(Loopar());
     }
-    
+
     private IEnumerator GiveCue(int index, bool reverse)
     {
-        foreach (Vector2 nota in partitura[index])
+        foreach (Nota nota in partitura.phases[index].notas)
         {
-            if (nota.y == -1 ^ reverse)
+            if (nota.direction == -1 ^ reverse)
             {
                 src.panStereo = -1;
                 StartCoroutine(ShowHide(leftArrow, 0.15f));
                 src.Play();
             }
-
-            else if (nota.y == 1 ^ reverse)
+            else if (nota.direction == 1 ^ reverse)
             {
                 src.panStereo = 1;
                 StartCoroutine(ShowHide(rightArrow, 0.15f));
                 src.Play();
             }
 
-            yield return new WaitForSeconds(nota.x / beat);
+            yield return new WaitForSeconds(nota.duration / beat);
         }
     }
+
     private IEnumerator ShowHide(SpriteRenderer sprite, float duration)
     {
         sprite.enabled = true;
@@ -91,22 +124,27 @@ public class LogicUnity : MonoBehaviour
 
     private IEnumerator StartPopcorning(int index, bool reverse)
     {
-        foreach (Vector2 nota in partitura[index])
+        Fase fase = partitura.phases[index]; // Obtemos a fase correspondente
+        foreach (Nota nota in fase.notas)
         {
-            if (nota.y == -1)
-                popcornerL.TossPopcorn();
+            if (nota.direction == -1)
+            {
+                popcornerL.TossPopcorn(); // Ativa o efeito do lado esquerdo
+            }
 
-            if (nota.y == 1)
-                popcornerR.TossPopcorn();
+            if (nota.direction == 1)
+            {
+                popcornerR.TossPopcorn(); // Ativa o efeito do lado direito
+            }
 
-            yield return new WaitForSeconds (nota.x / beat);
+            yield return new WaitForSeconds(nota.duration / beat);
         }
     }
-    
+
     private IEnumerator IniciarRound()
     {
         // rng
-        int index = Random.Range(0, partituraSize);
+        int index = Random.Range(0, partitura.phases.Count);
         bool reverse = (Random.Range(0,100) < ReverseChance) ? true : false;
         bool changeSpeed = (Random.Range(0,100) <  ChangeSpeedChance) ? true : false;
         if (changeSpeed) speedUpSlowDown();
@@ -180,54 +218,15 @@ public class LogicUnity : MonoBehaviour
 
     private void GenSheet()
     {
-        float roundendcue = spawndelay*beat;
-
-        partitura[0].Add(new Vector2(1f, -1));
-        partitura[0].Add(new Vector2(0.5f, 1));
-        partitura[0].Add(new Vector2(0.5f, 1));
-        partitura[0].Add(new Vector2(1f, 1));
-        partitura[0].Add(new Vector2(0.5f, -1));
-        partitura[0].Add(new Vector2(0.5f, -1));
-        partitura[0].Add(new Vector2(roundendcue, -1));
-
-        partitura[1].Add(new Vector2(1f, 1));
-        partitura[1].Add(new Vector2(1f, 1));
-        partitura[1].Add(new Vector2(1f, 1));
-        partitura[1].Add(new Vector2(roundendcue, 1));
-
-        partitura[2].Add(new Vector2(0.5f, 1));
-        partitura[2].Add(new Vector2(0.5f, -1));
-        partitura[2].Add(new Vector2(0.5f, 1));
-        partitura[2].Add(new Vector2(0.5f, -1));
-        partitura[2].Add(new Vector2(1f, 1));
-        partitura[2].Add(new Vector2(roundendcue, -1));
-
-        partitura[3].Add(new Vector2(1f, -1));
-        partitura[3].Add(new Vector2(1f, -1));
-        partitura[3].Add(new Vector2(0.5f, 1));
-        partitura[3].Add(new Vector2(0.5f, 1));
-        partitura[3].Add(new Vector2(roundendcue, -1));
-
-        partitura[4].Add(new Vector2(0.5f, -1));
-        partitura[4].Add(new Vector2(0.5f, 1));
-        partitura[4].Add(new Vector2(0.5f, -1));
-        partitura[4].Add(new Vector2(0.5f, 1));
-        partitura[4].Add(new Vector2(1f, -1));
-        partitura[4].Add(new Vector2(roundendcue, 1));
-
-        partitura[5].Add(new Vector2(1f, -1));
-        partitura[5].Add(new Vector2(0.5f, -1));
-        partitura[5].Add(new Vector2(1f, -1));
-        partitura[5].Add(new Vector2(0.5f, 1));
-        partitura[5].Add(new Vector2(0.5f, 1));
-        partitura[5].Add(new Vector2(roundendcue, 1));
-
-        partitura[6].Add(new Vector2(1f, -1));
-        partitura[6].Add(new Vector2(0.5f, 1));
-        partitura[6].Add(new Vector2(0.5f, 1));
-        partitura[6].Add(new Vector2(1f, 1));
-        partitura[6].Add(new Vector2(0.5f, -1));
-        partitura[6].Add(new Vector2(0.5f, -1));
-        partitura[6].Add(new Vector2(roundendcue, -1));
+        // Leitura do arquivo JSON
+        TextAsset jsonFile = Resources.Load<TextAsset>("partitura");
+        if (jsonFile != null)
+            partitura = JsonUtility.FromJson<Partitura>(jsonFile.text);
+        
+        // O final de todas as fases deve conter o tempo do final do round
+        foreach (Fase fase in partitura.phases)
+        {
+            fase.notas[fase.notas.Count - 1].duration = spawndelay * beat;
+        }
     }
 }

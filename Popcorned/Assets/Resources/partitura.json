@@ -1,0 +1,73 @@
+{
+    "phases": [
+        {
+            "notas": [
+                { "duration": 1.0, "direction": -1 },
+                { "duration": 0.5, "direction": 1 },
+                { "duration": 0.5, "direction": 1 },
+                { "duration": 1.0, "direction": 1 },
+                { "duration": 0.5, "direction": -1 },
+                { "duration": 0.5, "direction": -1 },
+                { "duration": 0.0, "direction": -1 }
+            ]
+        },
+        {
+            "notas": [
+                { "duration": 1.0, "direction": 1 },
+                { "duration": 1.0, "direction": 1 },
+                { "duration": 1.0, "direction": 1 },
+                { "duration": 0.0, "direction": 1 }
+            ]
+        },
+        {
+            "notas": [
+                { "duration": 0.5, "direction": 1 },
+                { "duration": 0.5, "direction": -1 },
+                { "duration": 0.5, "direction": 1 },
+                { "duration": 0.5, "direction": -1 },
+                { "duration": 1.0, "direction": 1 },
+                { "duration": 0.0, "direction": -1 }
+            ]
+        },
+        {
+            "notas": [
+                { "duration": 1.0, "direction": -1 },
+                { "duration": 1.0, "direction": -1 },
+                { "duration": 0.5, "direction": 1 },
+                { "duration": 0.5, "direction": 1 },
+                { "duration": 0.0, "direction": -1 }
+            ]
+        },
+        {
+            "notas": [
+                { "duration": 0.5, "direction": -1 },
+                { "duration": 0.5, "direction": 1 },
+                { "duration": 0.5, "direction": -1 },
+                { "duration": 0.5, "direction": 1 },
+                { "duration": 1.0, "direction": -1 },
+                { "duration": 0.0, "direction": 1 }
+            ]
+        },
+        {
+            "notas": [
+                { "duration": 1.0, "direction": -1 },
+                { "duration": 0.5, "direction": -1 },
+                { "duration": 1.0, "direction": -1 },
+                { "duration": 0.5, "direction": 1 },
+                { "duration": 0.5, "direction": 1 },
+                { "duration": 0.0, "direction": 1 }
+            ]
+        },
+        {
+            "notas": [
+                { "duration": 1.0, "direction": -1 },
+                { "duration": 0.5, "direction": 1 },
+                { "duration": 0.5, "direction": 1 },
+                { "duration": 1.0, "direction": 1 },
+                { "duration": 0.5, "direction": -1 },
+                { "duration": 0.5, "direction": -1 },
+                { "duration": 0.0, "direction": -1 }
+            ]
+        }
+    ]
+}
