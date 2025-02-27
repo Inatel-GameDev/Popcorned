@@ -1,23 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 public class PlayerBehavior : MonoBehaviour
 {
-    // a classe PlayerBehavior eh declarada como Singleton para que possa ser referenciada de forma facil durante todo o codigo
     public static PlayerBehavior Instance;
 
-    // flag publicas utilizadas para a mecanica de parry
     public bool parringR, parringL;
     public float tolerance;
+    public float invincibilityDuration = 0.5f; // Tempo de invencibilidade em segundos
 
     private float timer = 0;
+    private bool invincible = false;
 
     void Awake()
     {
         Instance = this;
     }
+
     void Start()
     {
         parringR = false;
@@ -26,23 +26,25 @@ public class PlayerBehavior : MonoBehaviour
 
     void Update()
     {
-        // a cada frame sao coletados os inputs e as variaveis flags publicas sao atualizadas
+        if (invincible) return; // Se estiver invencível, ignora os inputs
+
         if (Input.GetMouseButtonDown(1))
         {
             if (parringR)
             {
                 Main.Instance.decrementPoints();
                 Debug.Log("cancel");
+                StartCoroutine(InvincibilityCoroutine()); // Inicia invencibilidade
             }
-
             parringR = true;
             timer = Time.time;
         }
 
-        if (parringR == true && (Time.time - timer) > tolerance)
+        if (parringR && (Time.time - timer) > tolerance)
         {
             Main.Instance.decrementPoints();
             Debug.Log("calma");
+            StartCoroutine(InvincibilityCoroutine()); // Inicia invencibilidade
             parringR = false;
         }
 
@@ -52,22 +54,25 @@ public class PlayerBehavior : MonoBehaviour
             {
                 Main.Instance.decrementPoints();
                 Debug.Log("cancel");
+                StartCoroutine(InvincibilityCoroutine()); // Inicia invencibilidade
             }
-
             parringL = true;
             timer = Time.time;
         }
 
-        if (parringL == true && (Time.time - timer) > tolerance)
+        if (parringL && (Time.time - timer) > tolerance)
         {
             Main.Instance.decrementPoints();
             Debug.Log("calma");
+            StartCoroutine(InvincibilityCoroutine()); // Inicia invencibilidade
             parringL = false;
         }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        if (invincible) return; // Se estiver invencível, ignora colisões
+
         GameObject pipocatemp = collision.gameObject;
         if (pipocatemp.name == "PopcornR(Clone)")
         {
@@ -81,6 +86,7 @@ public class PlayerBehavior : MonoBehaviour
             {
                 Main.Instance.decrementPoints();
                 Debug.Log("errou");
+                StartCoroutine(InvincibilityCoroutine()); // Inicia invencibilidade
             }
         }
 
@@ -96,7 +102,17 @@ public class PlayerBehavior : MonoBehaviour
             {
                 Main.Instance.decrementPoints();
                 Debug.Log("errou");
+                StartCoroutine(InvincibilityCoroutine()); // Inicia invencibilidade
             }
         }
+    }
+
+    IEnumerator InvincibilityCoroutine()
+    {
+        invincible = true;
+        Debug.Log("Invencível por " + invincibilityDuration + " segundos");
+        yield return new WaitForSeconds(invincibilityDuration);
+        invincible = false;
+        Debug.Log("Invencibilidade acabou");
     }
 }
