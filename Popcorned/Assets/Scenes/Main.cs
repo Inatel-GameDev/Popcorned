@@ -15,15 +15,21 @@ public class Main : MonoBehaviour
     // atributos privados
     private int points;
 
-    void Awake()
+    private void Awake()
     {
         Instance = this;
         points = startingPoints;
     }
 
+    private void Start()
+    {
+        CountdownDecoder.Instance.Decode(points);
+    }
+
     public void incrementPoints()
     {
         points += (points < pointLimit) ? 1 : 0;
+        CountdownDecoder.Instance.Decode(points);
     }
 
     public void decrementPoints()
@@ -31,6 +37,8 @@ public class Main : MonoBehaviour
         points--;
         if (points < 0)
             LoadStart();
+        else
+            CountdownDecoder.Instance.Decode(points);
     }
     public void LoadStart()
     {
